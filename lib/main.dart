@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+//import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +13,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _formkey = GlobalKey<FormState>();
+  late String _phoneNumber;
+  late String _password;
+  late String _email;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,7 +58,7 @@ class _MyAppState extends State<MyApp> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                   child: Form(
-                    autovalidateMode: AutovalidateMode.always,
+                    key: _formkey,
                     child: Column(
                       children: [
                         SizedBox(
@@ -67,8 +71,15 @@ class _MyAppState extends State<MyApp> {
                             labelText: 'Email',
                             prefixIcon: Icon(Icons.email),
                           ),
-                          validator:
-                              EmailValidator(errorText: "Enter valid Email"),
+                          validator: (value) {
+                            if (!(new RegExp(
+                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                .hasMatch(value!))) {
+                              return "Invalid email id";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) => _email = value!,
                         ),
                         SizedBox(
                           height: 20,
@@ -81,36 +92,55 @@ class _MyAppState extends State<MyApp> {
                             labelText: 'Password',
                             prefixIcon: Icon(Icons.password),
                           ),
-                          validator: MultiValidator([
-                            PatternValidator(
-                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
-                                errorText:
-                                    "min 1 (uppercase, lowercase, numeric, special)")
-                          ]),
+                          validator: (value) {
+                            if (!value!.contains(new RegExp(r'[A-Z]')) ||
+                                !value.contains(new RegExp(r'[a-z]')) ||
+                                !value.contains(new RegExp(r'[0-9]')) ||
+                                !value.contains(new RegExp(
+                                    r'[!@#<>?":_`~;[\]\\|=+)(*&^%-]'))) {
+                              return "invalid";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) => _password = value!,
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        IntlPhoneField(
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          /*inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],*/
                           decoration: InputDecoration(
-                            labelText: 'Phone Number',
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(),
-                            ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Number',
+                            prefixIcon: Icon(Icons.phone),
                           ),
-                          onChanged: (phone) {
-                            print(phone.completeNumber);
+                          validator: (value) {
+                            if (value!.isEmpty)
+                              return 'Phone number is required.';
+                            String patttern =
+                                r'(^(?:[+]\d{1,3}|0\d{1,3}|\d{1,4})[\s-]?)?\d{10}$';
+                            RegExp regExp = new RegExp(patttern);
+                            if (!regExp.hasMatch(value!))
+                              return 'enter valid number';
+                            return null;
                           },
-                          onCountryChanged: (country) {
-                            print('Country changed to: ' + country.name);
-                          },
+                          onSaved: (value) => _phoneNumber = value!,
+                          maxLength: 15,
                         ),
                         SizedBox(
                           height: 20,
                         ),
                         TextButton(
                           onPressed: () {
-                            print('LogIn Complete');
+                            if (_formkey.currentState!.validate()) {
+                              _formkey.currentState!.save();
+                              print(_phoneNumber);
+                              print(_password);
+                              print(_email);
+                            }
                           },
                           style: TextButton.styleFrom(
                               foregroundColor: Colors.white,
