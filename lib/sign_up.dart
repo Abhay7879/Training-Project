@@ -68,10 +68,13 @@ class _signupState extends State<signup> {
                             prefixIcon: Icon(Icons.email),
                           ),
                           validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Email Id required';
+                            }
                             if (!(RegExp(
                                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                                 .hasMatch(value!))) {
-                              return "Invalid email id";
+                              return "Enter valid Email";
                             }
                             return null;
                           },
@@ -89,12 +92,15 @@ class _signupState extends State<signup> {
                             prefixIcon: Icon(Icons.password),
                           ),
                           validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Password required';
+                            }
                             if (!value!.contains(RegExp(r'[A-Z]')) ||
                                 !value.contains(RegExp(r'[a-z]')) ||
                                 !value.contains(RegExp(r'[0-9]')) ||
                                 !value.contains(
                                     RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%-]'))) {
-                              return "invalid";
+                              return "Enter valid Password";
                             }
                             return null;
                           },

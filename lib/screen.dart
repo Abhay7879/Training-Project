@@ -18,11 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Welcome Developers",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextButton(
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ));
                   });
                 },
-                child: Text(
+                child: const Text(
                   "Log Out",
                   style: TextStyle(fontSize: 20),
                 ))
