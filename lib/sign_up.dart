@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:training_project/screen.dart';
+import 'package:Zombieland/screen.dart';
 
 class signup extends StatefulWidget {
   const signup({super.key});
