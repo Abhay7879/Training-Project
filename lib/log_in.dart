@@ -43,7 +43,6 @@ class _LogInState extends State<LogIn> {
                   body: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Icon(
                           Icons.person,

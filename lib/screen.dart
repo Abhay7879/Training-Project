@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   FirebaseAuth.instance.signOut().then((value) {
                     print("Sign Out Done");
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MyApp(),
